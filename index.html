@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Realtime Stock Data</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+</head>
+
+<body ng-app="app">
+    <div class="container" ng-controller="main">
+
+        <div class="row">
+            <div class="col">
+                <h2>Realtime Stock Data</h2> 
+                <button ng-disabled="isSocketRunning" class="btn btn-large btn-info" ng-click="start()">Start Fetching Data</button>
+                <button ng-disabled="!isSocketRunning" class="btn btn-large btn-danger" ng-click="close()">Stop Fetching data</button>
+            </div>
+        </div>
+
+        <!-- {{MyData}} -->
+        <!-- <span ng-repeat="aa in data">{{$index}} ---  {{aa}}</span> -->
+
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Sr No</th>
+                    <th scope="col">Ticker</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="obj in data" ng-init = "stock_id = Object.keys(obj)[0]">
+                    <th scope="row">{{$index}}</th>
+                    <th scope="row">{{getStockName(obj)}}</th>
+                    <td ng-class="getStockStyle(obj)">{{getStockInfo(obj)}}</td>
+                    <td>{{getStockTimeStatus(obj)}}</td>
+                    <!-- <td>2 minutes ago</td> -->
+                </tr>
+                <!-- <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>2 minutes ago</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>a few seconds ago</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry the Bird</td>
+                    <td>10 pm</td>
+                </tr>
+                <tr>
+                    <th scope="row">4</th>
+                    <td>Larry the Bird</td>
+                    <td>10.30 pm</td>
+                </tr>
+                <tr>
+                    <th scope="row">5</th>
+                    <td>Larry the Bird</td>
+                    <td>19 dec 8 am</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- Angular JS Library -->
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-websocket/dist/angular-websocket.js"></script>
+    <script src="js/ngque.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
