@@ -25,6 +25,7 @@ Realtime Stock Data requires [Node.js](https://nodejs.org/) and [http-server](ht
 Install the dependencies and devDependencies and start the server.
 
 ```sh
+$ git clone https://github.com/satishpoul/realtime-stock-data.git
 $ cd realtime-stock-data
 $ npm install
 $ npm install -g http-server
