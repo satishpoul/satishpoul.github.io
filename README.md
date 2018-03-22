@@ -13,7 +13,6 @@ Dillinger uses a number of open source projects to work properly:
 * [AngularJS](http://angularjs.org) - HTML enhanced for web apps!
 * [Bootstrap](https://getbootstrap.com/) - great UI boilerplate for modern web apps
 * [node.js](https://nodejs.org/) - evented I/O for the backend
-* [Gulp](http://gulpjs.com) - the streaming build system
 * [Npm](https://www.npmjs.com/) - Node Package Manager
 * [jQuery](http://jquery.com) - duh
 * [Angular-Queue](https://github.com/jseppi/angular-queue) - for queue implementation
