@@ -18,10 +18,6 @@ app.controller('main', function ($scope, $queue) {
     // create an instance of a queue
     // note that the first argument - a callback to be used on each item - is required
     var myQueue = $queue.queue(myCallback, options);
-
-    // myQueue.add('item 1'); //add one item
-    // myQueue.addEach(['item 2', 'item 3']); //add multiple items
-
     myQueue.start(); //must call start() if queue starts paused
 
 
@@ -60,6 +56,7 @@ app.controller('main', function ($scope, $queue) {
         }
     };
 
+    // parse data received from socket to perform required parsing and converting it to array of objects to represent on UI
     $scope.convertToObj = function (array, timestamp) {
         //console.log(array);
 
@@ -97,62 +94,72 @@ app.controller('main', function ($scope, $queue) {
             });
     };
 
+    // open socket connection
     $scope.socket = new WebSocket("ws://stocks.mnet.website");;
 
+    // return stock name
     $scope.getStockName = function (obj) {
         return Object.keys(obj)[0];
     };
 
+    // return stock value
     $scope.getStockInfo = function (obj) {
         return obj[Object.keys(obj)[0]].cv;
     };
 
+    // user readable time history
     $scope.getStockTimeStatus = function (obj) {
         return $scope.timeDifference(new Date(), new Date(obj[Object.keys(obj)[0]].ts));
     };
 
+    // choose bg color depend on the stock value difference from previous one
     $scope.getStockStyle = function (obj) {
-        if (obj[Object.keys(obj)[0]].cs === '' || obj[Object.keys(obj)[0]].cs === 'new' || obj[Object.keys(obj)[0]].cs === 0) {
+        if (obj[Object.keys(obj)[0]].cs === 0) {
             return 'stock-info';
         } else {
-            if (obj[Object.keys(obj)[0]].cs > 0) {
-                return 'stock-success';
-            } else {
-                return 'stock-danger';
-            }
+            return obj[Object.keys(obj)[0]].cs > 0 ? 'stock-success' : 'stock-danger';
         }
     }
 
 
+    // open socket connection
     $scope.start = function () {
         window.location.reload();
     }
 
+    // close socket connection
     $scope.close = function () {
         $scope.socket.close();
         $scope.isSocketRunning = false;
     }
 
+    // open socket to receive live stock updates 
     $scope.openSocket = function () {
         var socket = new WebSocket("ws://stocks.mnet.website");
     };
 
+    // callback called on opening of socket
     $scope.socket.onopen = function (event) {
         $scope.isSocketRunning = true;
     };
 
+    // callback called on recieving of message from socket connection
     $scope.socket.onmessage = function () {
         myQueue.add(JSON.parse(event.data));
     };
 
+    // callback called if get error on opening socket
     $scope.socket.onerror = function (event) {
         console.log(event);
     }
 
+    // callback called on closing of socket
     $scope.socket.onclose = function (event) {
         alert('Press start button to start fetching realtime data.');
     }
 
+
+    // close the socket before unloading page
     $scope.$on('$destroy', function (event) {
         $scope.socket.close();
     });
