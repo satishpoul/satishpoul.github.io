@@ -9,78 +9,73 @@
     <title>Realtime Stock Data</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
 </head>
 
 <body ng-app="app">
-    <div class="container" ng-controller="main">
+    <div class="container" ng-controller="main" ng-show="data.length">
 
-        <div class="row">
+        <div class="row" style="margin-left:0px;">
             <div class="col">
-                <h2>Realtime Stock Data</h2> 
+                <h2>Realtime Stock Data</h2>
                 <button ng-disabled="isSocketRunning" class="btn btn-large btn-info" ng-click="start()">Start Fetching Data</button>
                 <button ng-disabled="!isSocketRunning" class="btn btn-large btn-danger" ng-click="close()">Stop Fetching data</button>
             </div>
         </div>
 
+        <br>
+
         <!-- {{MyData}} -->
         <!-- <span ng-repeat="aa in data">{{$index}} ---  {{aa}}</span> -->
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">Realtime Stock Data</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Ticker</th>
+                            <th>Price</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-if="data.length">
+                        <tr ng-class="getStockStyle(obj)" ng-repeat="obj in data" ng-show="obj">
+                            <th>{{$index+1}}</th>
+                            <th>{{getStockName(obj)}}</th>
+                            <td>{{getStockInfo(obj)}}</td>
+                            <td>{{getStockTimeStatus(obj)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <table class="table table-bordered table-dark">
-            <thead>
-                <tr>
-                    <th scope="col">Sr No</th>
-                    <th scope="col">Ticker</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Last Updated</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="obj in data" ng-init = "stock_id = Object.keys(obj)[0]">
-                    <th scope="row">{{$index}}</th>
-                    <th scope="row">{{getStockName(obj)}}</th>
-                    <td ng-class="getStockStyle(obj)">{{getStockInfo(obj)}}</td>
-                    <td>{{getStockTimeStatus(obj)}}</td>
-                    <!-- <td>2 minutes ago</td> -->
-                </tr>
-                <!-- <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>2 minutes ago</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>a few seconds ago</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry the Bird</td>
-                    <td>10 pm</td>
-                </tr>
-                <tr>
-                    <th scope="row">4</th>
-                    <td>Larry the Bird</td>
-                    <td>10.30 pm</td>
-                </tr>
-                <tr>
-                    <th scope="row">5</th>
-                    <td>Larry the Bird</td>
-                    <td>19 dec 8 am</td>
-                </tr> -->
-            </tbody>
-        </table>
     </div>
-    
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+    <style>
+        .stock-info {
+            background-color: #5bc0de;
+        }
+
+        .stock-success {
+            background-color: #5cb85c;
+        }
+
+        .stock-danger {
+            background-color: #d9534f;
+        }
+    </style>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Angular JS Library -->
     <script src="node_modules/angular/angular.js"></script>
