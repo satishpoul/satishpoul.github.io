@@ -61,7 +61,7 @@ app.controller('main', function ($scope, $queue) {
         //console.log(array);
 
         let displayObj = {}, tempObj = {};
-        var ts = timestamp; // new Date().getTime();
+        var timeStamp = timestamp; // new Date().getTime();
 
         array.map((item, index) => { tempObj[item[0]] = item[1]; });
         Object.entries(tempObj).forEach(
@@ -77,17 +77,17 @@ app.controller('main', function ($scope, $queue) {
                         }
                     });
                     if (isKeyPresent) {
-                        var cs = $scope.data[keyIndex][key].cs;
-                        if ($scope.data[keyIndex][key].cv != value)
-                            cs = ($scope.data[keyIndex][key].cv - value) > 0 ? -1 : 1;
+                        var difference = $scope.data[keyIndex][key].difference;
+                        if ($scope.data[keyIndex][key].currentValue != value)
+                        difference = ($scope.data[keyIndex][key].currentValue - value) > 0 ? -1 : 1;
                         
-                        $scope.data[keyIndex][key].cs = cs;
-                        $scope.data[keyIndex][key].cv = value;
-                        $scope.data[keyIndex][key].ts = ts;
+                        $scope.data[keyIndex][key].difference = difference;
+                        $scope.data[keyIndex][key].currentValue = value;
+                        $scope.data[keyIndex][key].timeStamp = timeStamp;
 
                     } else {
                         var obj = {};
-                        obj[key] = { cv: value, cs: 0, ts: ts };
+                        obj[key] = { currentValue: value, difference: 0, timeStamp: timeStamp };
                         $scope.data.push(obj);
                     }
                 });
@@ -104,20 +104,20 @@ app.controller('main', function ($scope, $queue) {
 
     // return stock value
     $scope.getStockInfo = function (obj) {
-        return obj[Object.keys(obj)[0]].cv;
+        return obj[Object.keys(obj)[0]].currentValue;
     };
 
     // user readable time history
     $scope.getStockTimeStatus = function (obj) {
-        return $scope.timeDifference(new Date(), new Date(obj[Object.keys(obj)[0]].ts));
+        return $scope.timeDifference(new Date(), new Date(obj[Object.keys(obj)[0]].timeStamp));
     };
 
     // choose bg color depend on the stock value difference from previous one
     $scope.getStockStyle = function (obj) {
-        if (obj[Object.keys(obj)[0]].cs === 0) {
+        if (obj[Object.keys(obj)[0]].difference === 0) {
             return 'stock-info';
         } else {
-            return obj[Object.keys(obj)[0]].cs > 0 ? 'stock-success' : 'stock-danger';
+            return obj[Object.keys(obj)[0]].difference > 0 ? 'stock-success' : 'stock-danger';
         }
     }
 
